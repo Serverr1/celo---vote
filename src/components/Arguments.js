@@ -17,7 +17,7 @@ export const Arguments = ( props ) => {
     <div class="card-body">
       <p class="card-text">{arg.arg1}</p>
     <div class="mb-0 mt-1">
-    <button  onClick={()=>props.voteforArg1(arg.index)} class="btn btn-info mb-0 mt-1">Vote <span class="badge bg-secondary">{arg.arg1Votes}</span></button>
+    <button  onClick={()=>props.voteforArg(arg.index, true)} class="btn btn-info mb-0 mt-1">Vote <span class="badge bg-secondary">{arg.arg1Votes}</span></button>
     </div>
   </div>
   </div>
@@ -27,7 +27,7 @@ export const Arguments = ( props ) => {
     <div class="card-body">
     <p class="card-text">{arg.arg2}</p>
     <div class="mb-0 mt-1">
-    <button onClick={ ()=> props.voteforArg2(arg.index)} class="btn btn-info mb-0 mt-1">Vote <span class="badge bg-secondary">{arg.arg2Votes}</span></button>
+    <button onClick={ ()=> props.voteforArg(arg.index, false)} class="btn btn-info mb-0 mt-1">Vote <span class="badge bg-secondary">{arg.arg2Votes}</span></button>
     </div>
   </div>
   </div>

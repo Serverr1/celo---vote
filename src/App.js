@@ -116,7 +116,7 @@ function App() {
 
   
 
-  const voteforArg1 = async (_index) => {
+  const voteforArg = async (_index, _isArg1) => {
     try {
       const cUSDContract = new kit.web3.eth.Contract(IERC, cUSDContractAddress);
       const cost = new BigNumber(voteAmmount)
@@ -125,24 +125,13 @@ function App() {
       await cUSDContract.methods
         .approve(contractAddress, cost)
         .send({ from: address });
-      await contract.methods.voteArg1(_index, cost).send({ from: address });
+      await contract.methods.voteArg(_index, cost, _isArg1).send({ from: address });
       getArguments();
       getBalance();
     } catch (error) {
       console.log(error);
     }};
 
-    const voteforArg2 = async (_index) => {
-      try {
-        const cUSDContract = new kit.web3.eth.Contract(IERC, cUSDContractAddress);
-        const cost = new BigNumber(voteAmmount).shiftedBy(ERC20_DECIMALS).toString();
-        await cUSDContract.methods.approve(contractAddress, cost).send({ from: address });
-        await contract.methods.voteArg2(_index, cost).send({ from: address });
-        getArguments();
-        getBalance();
-      } catch (error) {
-        console.log(error);
-      }};
 
   useEffect(() => {
     connectToWallet();
@@ -164,7 +153,7 @@ function App() {
     <div>
     <Header cUSDBalance={cUSDBalance} onAdd={() =>setShowAddArgument(!showAddArgument)} />
   {showAddArgument && <Addarguments addArgument={addArgument} />}
-  <Arguments argumentss={argumentss} voteforArg1 ={voteforArg1} voteforArg2={voteforArg2} />
+  <Arguments argumentss={argumentss} voteforArg ={voteforArg} />
   
     </div>
   );
