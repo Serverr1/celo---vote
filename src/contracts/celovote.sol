@@ -220,8 +220,8 @@ function readArguments(uint _index) public view returns (
 	}
 
 
-    // function to vote for argument1 by paying 1 cUsd
-    function voteArg1(uint _index, uint _ammount) public payable  {
+    // function to vote for argument by paying 1 cUsd
+    function voteArg(uint _index, uint _ammount, bool _isArg1) public payable  {
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
@@ -230,20 +230,13 @@ function readArguments(uint _index) public view returns (
           ),
           "Transfer failed."
         );
-       arguments[_index].arg1votes++;
-    }
-
-    // function to vote for argument1 by paying 1 cUsd
-    function voteArg2(uint _index, uint _ammount) public payable  {
-        require(
-          IERC20Token(cUsdTokenAddress).transferFrom(
-            msg.sender,
-            arguments[_index].owner,
-            _ammount
-          ),
-          "Transfer failed."
-        );
-       arguments[_index].arg2votes++;
+	
+	if(_isArg1){ 
+        arguments[_index].arg1votes++;
+	}
+	else{
+	arguments[_index].arg2votes++;
+	}
     }
 
     // function to return the length of topics with arguments
