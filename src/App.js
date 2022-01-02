@@ -153,7 +153,7 @@ function App() {
     <div>
     <Header cUSDBalance={cUSDBalance} onAdd={() =>setShowAddArgument(!showAddArgument)} />
   {showAddArgument && <Addarguments addArgument={addArgument} />}
-  <Arguments argumentss={argumentss} voteforArg1 ={voteforArg1} voteforArg2={voteforArg2} />
+  <Arguments argumentss={argumentss} voteforArg ={voteforArg} />
   
     </div>
   );
