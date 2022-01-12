@@ -162,8 +162,11 @@ contract celoVote {
     address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
     using SafeMath for uint;
 
-  uint internal argumentsLength = 0;
+    uint internal argumentsLength = 0;
+    // setting the agreement price to 1 cusd
+    uint agreementprice = 1000000000000000000;
 
+    address _contractOwner;
 
 // Declaring struct with all the arguments properties
     struct Arguments {
@@ -178,7 +181,16 @@ contract celoVote {
     // mapping each struct with an index of type uint
     mapping (uint => Arguments) internal arguments;
 
+
+// constructor for setting the ownership of the contract to the creator of the contract
+    constructor() {
+        _contractOwner = msg.sender;
+    }
     
+    modifier onlyOwner() {
+        require(msg.sender == _contractOwner);
+        _;
+    }
 
 // Add a new topic and arguments to the celo block - chain
    function addArgument(
@@ -196,19 +208,41 @@ contract celoVote {
             _arg1votes,
             _arg2votes
 		);
+    
         argumentsLength++; // increasing the length of the total topics after adding a new topic and arguments to the celo block-chain
 	}
 
 
-// reading the arguments from the celo block chain
-function readArguments(uint _index) public view returns (
-		address payable,
-		string memory, 
-		string memory, 
-		string memory, 
-		uint, 
-		uint
-	) {
+    // function to edith argument
+    function editArgument(
+        uint256 _index,
+        string memory _topic,
+		string memory _arg1,
+		string memory _arg2 
+    ) public {
+        require(msg.sender == arguments[_index].owner, "Only creator of argument can edit");
+        uint _arg1votes = arguments[_index].arg1votes;
+        uint _arg2votes = arguments[_index].arg2votes;
+        arguments[_index] = Arguments(
+            payable(msg.sender),
+			_topic,
+			_arg1,
+			_arg2,
+            _arg1votes,
+            _arg2votes
+        );
+    }
+
+
+    // reading the arguments from the celo block chain
+    function readArguments(uint _index) public view returns (
+            address payable,
+            string memory, 
+            string memory, 
+            string memory, 
+            uint, 
+            uint
+        ) {
 		return (
 			arguments[_index].owner, 
 			arguments[_index].topic, 
@@ -220,35 +254,33 @@ function readArguments(uint _index) public view returns (
 	}
 
 
-    // function to vote for argument1 by paying 1 cUsd
-    function voteArg1(uint _index, uint _ammount) public payable  {
+    // function to vote for argument by paying in cUsd
+    function voteArgument(uint _index, uint arg_num, uint _amount) public payable  {
+        require(_amount == agreementprice);
+        
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
             arguments[_index].owner,
-            _ammount
+            _amount
           ),
           "Transfer failed."
         );
-       arguments[_index].arg1votes++;
-    }
 
-    // function to vote for argument1 by paying 1 cUsd
-    function voteArg2(uint _index, uint _ammount) public payable  {
-        require(
-          IERC20Token(cUsdTokenAddress).transferFrom(
-            msg.sender,
-            arguments[_index].owner,
-            _ammount
-          ),
-          "Transfer failed."
-        );
-       arguments[_index].arg2votes++;
+        if (arg_num == 1)   arguments[_index].arg1votes++; // increasing the votes for arg 1
+        if (arg_num == 2)   arguments[_index].arg2votes++; // increasing the votes for arg 2
+        
     }
 
     // function to return the length of topics with arguments
     function getargumentsLength() public view returns (uint) {
         return (argumentsLength);
+    }
+    
+
+    // function to modify the agreement price
+    function modify_agreement_price(uint new_cost) public onlyOwner{
+        agreementprice = new_cost;
     }
   
 }
