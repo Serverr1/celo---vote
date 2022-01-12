@@ -163,11 +163,7 @@ contract celoVote {
     using SafeMath for uint;
 
     uint internal argumentsLength = 0;
-<<<<<<< HEAD
     // setting the agreement price to 1 cusd
-=======
-    // set to 1 cusd
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
     uint agreementprice = 1000000000000000000;
 
     address _contractOwner;
@@ -185,11 +181,8 @@ contract celoVote {
     // mapping each struct with an index of type uint
     mapping (uint => Arguments) internal arguments;
 
-<<<<<<< HEAD
 
 // constructor for setting the ownership of the contract to the creator of the contract
-=======
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
     constructor() {
         _contractOwner = msg.sender;
     }
@@ -220,7 +213,6 @@ contract celoVote {
 	}
 
 
-<<<<<<< HEAD
     // function to edith argument
     function editArgument(
         uint256 _index,
@@ -242,8 +234,6 @@ contract celoVote {
     }
 
 
-=======
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
     // reading the arguments from the celo block chain
     function readArguments(uint _index) public view returns (
             address payable,
@@ -264,14 +254,8 @@ contract celoVote {
 	}
 
 
-<<<<<<< HEAD
     // function to vote for argument by paying in cUsd
     function voteArgument(uint _index, uint arg_num, uint _amount) public payable  {
-=======
-    // function to vote for argument1 by paying 1 cUsd
-    function voteArgument(uint _index, uint arg_num, uint _amount) public payable  {
-        
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
         require(_amount == agreementprice);
         
         require(
@@ -283,13 +267,8 @@ contract celoVote {
           "Transfer failed."
         );
 
-<<<<<<< HEAD
         if (arg_num == 1)   arguments[_index].arg1votes++; // increasing the votes for arg 1
         if (arg_num == 2)   arguments[_index].arg2votes++; // increasing the votes for arg 2
-=======
-        if (arg_num == 1)   arguments[_index].arg1votes++;
-        if (arg_num == 2)   arguments[_index].arg2votes++;
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
         
     }
 
@@ -297,13 +276,9 @@ contract celoVote {
     function getargumentsLength() public view returns (uint) {
         return (argumentsLength);
     }
-<<<<<<< HEAD
     
 
     // function to modify the agreement price
-=======
-
->>>>>>> 947cf3b119b225c54911e86bc54a0b8a2fa208c6
     function modify_agreement_price(uint new_cost) public onlyOwner{
         agreementprice = new_cost;
     }
